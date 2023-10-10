@@ -1,0 +1,45 @@
+{
+    "name": "siiau/api-client",
+    "description": "Simple SDK for interacting with SIIAU web service",
+    "type": "library",
+    "require": {
+        "php": "^8.1",
+        "saloonphp/saloon": "^3.0",
+        "saloonphp/laravel-plugin": "^3.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.20",
+        "friendsofphp/php-cs-fixer": "^3.34"
+    },
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Siiau\\ApiClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oscar Arámbula",
+            "email": "peteroso876@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "fix-code": [
+            "./vendor/bin/php-cs-fixer fix"
+        ],
+        "test": [
+            "./vendor/bin/pest"
+        ]
+    }
+}
