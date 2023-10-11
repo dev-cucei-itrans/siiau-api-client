@@ -2,13 +2,11 @@
 
 namespace Siiau\ApiClient\Requests;
 
-use JsonException;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Saloon\Traits\Body\HasStringBody;
-use Siiau\ApiClient\Objects\{Alumno, Ciclo, Credenciales, Nombre};
+use Siiau\ApiClient\Objects\{Credenciales};
 
 final class ValidarCredencialesRequest extends Request implements HasBody
 {
