@@ -7,7 +7,8 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Alumno, Ciclo, Nombre};
+use Saloon\Traits\Body\HasStringBody;
+use Siiau\ApiClient\Objects\{Alumno, Ciclo, Credenciales, Nombre};
 
 final class ValidarCredencialesRequest extends Request implements HasBody
 {
@@ -31,5 +32,14 @@ final class ValidarCredencialesRequest extends Request implements HasBody
             'codigo' => $this->codigo,
             'password' => $this->password,
         ];
+    }
+
+    public function createDtoFromResponse(Response $response): Credenciales
+    {
+        $data = $response->body();
+
+        return new Credenciales(
+            credencialesValidas: $data,
+        );
     }
 }
