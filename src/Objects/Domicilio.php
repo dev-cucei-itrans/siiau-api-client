@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient\Objects;
 
-class Domicilio
+final class Domicilio
 {
     public function __construct(
         public readonly string $localidad,

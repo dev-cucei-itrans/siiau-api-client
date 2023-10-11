@@ -14,4 +14,12 @@ final class SiiauConnector extends Connector
     {
         return $this->url;
     }
+
+    protected function defaultHeaders(): array
+    {
+        return [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+    }
 }
