@@ -8,8 +8,8 @@ use Siiau\ApiClient\Requests\GetAlumnoRequest;
 
 class AlumnoResource extends BaseResource
 {
-     public function obtener(String $codigo): Response
-     {
-         return $this->connector->send(new GetAlumnoRequest($codigo));
-     }
+    public function obtener(String $codigo): Response
+    {
+        return $this->connector->send(new GetAlumnoRequest($codigo));
+    }
 }
