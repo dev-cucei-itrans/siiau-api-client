@@ -2,11 +2,11 @@
 
 namespace Siiau\ApiClient\Objects;
 
-class Nacimiento
+final class Nacimiento
 {
     public function __construct(
-        public readonly string $localidadNacimiento,
-        public readonly string $fechaNacimiento,
-        public readonly string $paisNacimiento,
+        public readonly string $localidad,
+        public readonly string $fecha,
+        public readonly string $pais,
     ) {}
 }

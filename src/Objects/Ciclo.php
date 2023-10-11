@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient\Objects;
 
-class Ciclo
+final class Ciclo
 {
     public function __construct(
         public readonly string $id,

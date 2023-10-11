@@ -2,21 +2,17 @@
 
 namespace Siiau\ApiClient\Requests;
 
+use JsonException;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
-use Saloon\Http\Request;
-use Saloon\Http\Response;
+use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\Alumno;
-use Siiau\ApiClient\Objects\Ciclo;
-use Siiau\ApiClient\Objects\NombreCompleto;
+use Siiau\ApiClient\Objects\{Alumno, Ciclo, Nombre};
 
-class GetAlumnoRequest extends Request implements HasBody
+final class GetAlumnoRequest extends Request implements HasBody
 {
     use HasJsonBody;
-    /**
-     * The HTTP method.
-     */
+
     protected Method $method = Method::POST;
 
     public function __construct(
@@ -35,24 +31,20 @@ class GetAlumnoRequest extends Request implements HasBody
         ];
     }
 
-    protected function defaultHeaders(): array
-    {
-        return [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
-    }
-
+    /**
+     * @throws JsonException
+     */
     public function createDtoFromResponse(Response $response): Alumno
     {
-        $response = $response->json();
+        $data = $response->json();
+
         return new Alumno(
-            nombre: new NombreCompleto($response['nombre'], $response['apellido']),
-            carrera: $response['carrera'],
-            codigo: $response['codigo'],
-            situacion: $response['situacion'],
-            ultimoCiclo: new Ciclo($response['ultimo_ciclo'], $response['ultimo_cicloDesc']),
-            campus: $response['campus']
+            carrera: $data['carrera'],
+            nombre: new Nombre($data['nombre'], $data['apellido']),
+            codigo: $data['codigo'],
+            situacion: $data['situacion'],
+            ultimoCiclo: new Ciclo($data['ultimo_ciclo'], $data['ultimo_cicloDesc']),
+            campus: $data['campus']
         );
     }
 }

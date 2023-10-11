@@ -15,9 +15,6 @@ final class LoginRequest extends Request implements HasBody
 {
     use HasJsonBody;
 
-    /**
-     * The HTTP method.
-     */
     protected Method $method = Method::POST;
 
     public function __construct(
@@ -35,14 +32,6 @@ final class LoginRequest extends Request implements HasBody
         return [
             'email' => $this->email,
             'password' => $this->password,
-        ];
-    }
-
-    protected function defaultHeaders(): array
-    {
-        return [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
         ];
     }
 

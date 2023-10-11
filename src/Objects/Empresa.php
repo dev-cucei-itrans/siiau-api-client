@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient\Objects;
 
-class Empresa
+final class Empresa
 {
     public function __construct(
         public readonly string $nombre,
