@@ -3,8 +3,7 @@
 namespace Siiau\ApiClient;
 
 use Saloon\Http\Connector;
-use Siiau\ApiClient\Resources\AlumnoResource;
-use Siiau\ApiClient\Resources\UsuarioResource;
+use Siiau\ApiClient\Resources\{AlumnoResource, UsuarioResource};
 
 final class SiiauConnector extends Connector
 {

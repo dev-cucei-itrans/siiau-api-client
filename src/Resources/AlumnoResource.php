@@ -2,13 +2,18 @@
 
 namespace Siiau\ApiClient\Resources;
 
-use Saloon\Http\BaseResource;
-use Saloon\Http\Response;
+use Saloon\Http\{BaseResource, Response};
+use ReflectionException;
 use Siiau\ApiClient\Requests\GetAlumnoRequest;
+use Throwable;
 
-class AlumnoResource extends BaseResource
+final class AlumnoResource extends BaseResource
 {
-    public function obtener(String $codigo): Response
+    /**
+     * @throws ReflectionException
+     * @throws Throwable
+     */
+    public function obtener(string $codigo): Response
     {
         return $this->connector->send(new GetAlumnoRequest($codigo));
     }

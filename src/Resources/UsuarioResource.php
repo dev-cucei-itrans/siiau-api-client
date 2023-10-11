@@ -2,19 +2,27 @@
 
 namespace Siiau\ApiClient\Resources;
 
-use Saloon\Http\BaseResource;
-use Saloon\Http\Response;
-use Siiau\ApiClient\Requests\GetUsuarioRequest;
-use Siiau\ApiClient\Requests\ValidarCredencialesRequest;
+use ReflectionException;
+use Saloon\Http\{BaseResource, Response};
+use Siiau\ApiClient\Requests\{GetUsuarioRequest, ValidarCredencialesRequest};
+use Throwable;
 
-class UsuarioResource extends BaseResource
+final class UsuarioResource extends BaseResource
 {
-    public function obtener(String $codigo): Response
+    /**
+     * @throws ReflectionException
+     * @throws Throwable
+     */
+    public function obtener(string $codigo): Response
     {
         return $this->connector->send(new GetUsuarioRequest($codigo));
     }
 
-    public function validar(String $codigo, String $password): Response
+    /**
+     * @throws ReflectionException
+     * @throws Throwable
+     */
+    public function validar(string $codigo, string $password): Response
     {
         return $this->connector->send(new ValidarCredencialesRequest($codigo, $password));
     }
