@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Ciclo, Creditos, CreditosArea, Fecha, Kardex, Materia};
+use Siiau\ApiClient\Objects\{Ciclo, Creditos, CreditosArea, DatosMateria, EstatusMateria, Fecha, Kardex, Materia};
 
 final class KardexRequest extends Request implements HasBody
 {
@@ -55,23 +55,27 @@ final class KardexRequest extends Request implements HasBody
 
         foreach($data['materias'] as $materia) {
             $materias[] = new Materia(
-                nrc: $materia['nrc'],
+                datosMateria: new DatosMateria(
+                    nrc: $materia['nrc'],
+                    clave: $materia['clave'],
+                    seccion: null,
+                    descripcion: $materia['descripcion'],
+                    creditos: $materia['creditos'],
+                    horarioMateria: null,
+                ),
                 fecha: new Fecha(
                     fechaInicio: $materia['fecha'],
                     fechaFin: null,
                 ),
-                calificacion: $materia['calificacion'],
-                tipo: $materia['tipo'],
-                descripcion: $materia['descripcion'],
+                estatus: new EstatusMateria(
+                    calificacion: $materia['calificacion'],
+                    tipo: $materia['tipo'],
+                ),
                 ciclo: new Ciclo(
                     id: $materia['ciclo'],
                     descripcion: null,
                 ),
-                clave: $materia['clave'],
-                creditos: $materia['creditos'],
                 profesor: null,
-                seccion: null,
-                horarioMateria: null,
             );
         }
 

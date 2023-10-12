@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Area, Ciclo, Creditos, CreditosArea, Fecha, Horario, HorarioMateria, Kardex, Materia, Profesor};
+use Siiau\ApiClient\Objects\{DatosMateria, Fecha, Horario, HorarioMateria, Materia, Profesor};
 
 final class HorarioRequest extends Request implements HasBody
 {
@@ -53,23 +53,24 @@ final class HorarioRequest extends Request implements HasBody
             }, $materia['Horario']);
 
             $materias[] = new Materia(
-                nrc: $materia['nrc'],
+                datosMateria: new DatosMateria(
+                    nrc: $materia['nrc'],
+                    clave: $materia['clave'],
+                    seccion: $materia['seccion'],
+                    descripcion: $materia['descripcion'],
+                    creditos: $materia['creditos'],
+                    horarioMateria: $horarios,
+                ),
                 fecha: new Fecha(
                     fechaInicio: $materia['fechaInicio'],
                     fechaFin: $materia['fechaFin'],
                 ),
-                calificacion: null,
-                tipo: null,
-                descripcion: $materia['descripcion'],
+                estatus: null,
                 ciclo: null,
-                clave: $materia['clave'],
-                creditos: $materia['creditos'],
                 profesor: new Profesor(
                     nombreProfesor: $materia['nombreProfesor'],
                     codigoProfesor: $materia['codigoProfesor'],
                 ),
-                seccion: $materia['seccion'],
-                horarioMateria: $horarios,
             );
         }
 
