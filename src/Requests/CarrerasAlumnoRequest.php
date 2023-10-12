@@ -34,7 +34,7 @@ final class CarrerasAlumnoRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): mixed
+    public function createDtoFromResponse(Response $response): array
     {
         $data = $response->json();
         $carreras = array();
