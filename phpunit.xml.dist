@@ -14,4 +14,9 @@
             <directory suffix=".php">./src</directory>
         </include>
     </source>
+    <php>
+        <env name="SIIAU_WS_URL" value=""/>
+        <env name="SIIAU_WS_EMAIL" value=""/>
+        <env name="SIIAU_WS_PASSWORD" value=""/>
+    </php>
 </phpunit>
