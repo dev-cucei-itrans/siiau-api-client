@@ -8,5 +8,6 @@ final class HorarioMateria
         public readonly string $hora,
         public readonly string $edificio,
         public readonly string $aula,
+        public readonly ?array $dias = [],
     ) {}
 }
