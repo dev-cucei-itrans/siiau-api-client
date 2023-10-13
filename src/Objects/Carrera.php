@@ -6,6 +6,6 @@ final class Carrera
 {
     public function __construct(
         public readonly string $id,
-        public readonly string $descripcion,
+        public readonly ?string $descripcion = null,
     ) {}
 }

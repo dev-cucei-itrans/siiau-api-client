@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{DatosMateria, Fecha, Horario, HorarioMateria, Materia, Profesor};
+use Siiau\ApiClient\Objects\{Error, Fecha, Horario, HorarioMateria, Materia, Profesor};
 
 final class HorarioRequest extends Request implements HasBody
 {
@@ -36,8 +36,12 @@ final class HorarioRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): Horario
+    public function createDtoFromResponse(Response $response): Horario|Error
     {
+        if($response->failed()) {
+            return new Error($response->json('error'));
+        }
+
         $data = $response->json();
         $materias = array();
         $horarios = array();
@@ -53,23 +57,19 @@ final class HorarioRequest extends Request implements HasBody
             }, $materia['Horario']);
 
             $materias[] = new Materia(
-                datosMateria: new DatosMateria(
-                    nrc: $materia['nrc'],
-                    clave: $materia['clave'],
-                    seccion: $materia['seccion'],
-                    descripcion: $materia['descripcion'],
-                    creditos: $materia['creditos'],
-                    horarioMateria: $horarios,
-                ),
+                nrc: $materia['nrc'],
+                clave: $materia['clave'],
+                seccion: $materia['seccion'],
+                descripcion: $materia['descripcion'],
+                creditos: $materia['creditos'],
+                horario: $horarios,
                 fecha: new Fecha(
-                    fechaInicio: $materia['fechaInicio'],
-                    fechaFin: $materia['fechaFin'],
+                    inicio: $materia['fechaInicio'],
+                    fin: $materia['fechaFin'],
                 ),
-                estatus: null,
-                ciclo: null,
                 profesor: new Profesor(
-                    nombreProfesor: $materia['nombreProfesor'],
-                    codigoProfesor: $materia['codigoProfesor'],
+                    nombre: $materia['nombreProfesor'],
+                    codigo: $materia['codigoProfesor'],
                 ),
             );
         }

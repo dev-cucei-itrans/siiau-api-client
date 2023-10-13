@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Ciclo, Creditos, CreditosArea, DatosMateria, EstatusMateria, Fecha, Kardex, Materia};
+use Siiau\ApiClient\Objects\{Ciclo, Creditos, CreditosArea, Error, EstatusMateria, Fecha, Kardex, Materia};
 
 final class KardexRequest extends Request implements HasBody
 {
@@ -36,8 +36,12 @@ final class KardexRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): Kardex
+    public function createDtoFromResponse(Response $response): Kardex|Error
     {
+        if($response->failed()) {
+            return new Error($response->json('error'));
+        }
+
         $data = $response->json();
         $areas = array();
         $materias = array();
@@ -55,17 +59,12 @@ final class KardexRequest extends Request implements HasBody
 
         foreach($data['materias'] as $materia) {
             $materias[] = new Materia(
-                datosMateria: new DatosMateria(
-                    nrc: $materia['nrc'],
-                    clave: $materia['clave'],
-                    seccion: null,
-                    descripcion: $materia['descripcion'],
-                    creditos: $materia['creditos'],
-                    horarioMateria: null,
-                ),
+                nrc: $materia['nrc'],
+                clave: $materia['clave'],
+                descripcion: $materia['descripcion'],
+                creditos: $materia['creditos'],
                 fecha: new Fecha(
-                    fechaInicio: $materia['fecha'],
-                    fechaFin: null,
+                    fechaFin: $materia['fecha'],
                 ),
                 estatus: new EstatusMateria(
                     calificacion: $materia['calificacion'],
@@ -73,9 +72,7 @@ final class KardexRequest extends Request implements HasBody
                 ),
                 ciclo: new Ciclo(
                     id: $materia['ciclo'],
-                    descripcion: null,
                 ),
-                profesor: null,
             );
         }
 

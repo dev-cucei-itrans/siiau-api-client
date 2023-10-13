@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Estatus, TipoUsuario};
+use Siiau\ApiClient\Objects\{Error, Estatus, TipoUsuario};
 
 final class TipoUsuarioRequest extends Request implements HasBody
 {
@@ -36,10 +36,14 @@ final class TipoUsuarioRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): TipoUsuario
+    public function createDtoFromResponse(Response $response): TipoUsuario|Error
     {
+        if($response->failed()) {
+            return new Error($response->json('error'));
+        }
+
         $data = $response->json();
 
-        return new TipoUsuario(tipo: $data['tipoUsuario'], estatus: new Estatus(id: null, descripcion: $data['estatus']));
+        return new TipoUsuario(tipo: $data['tipoUsuario'], estatus: new Estatus(descripcion: $data['estatus']));
     }
 }

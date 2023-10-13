@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Carrera};
+use Siiau\ApiClient\Objects\Error;
 
 final class BuscarNrcRequest extends Request implements HasBody
 {
@@ -16,7 +16,7 @@ final class BuscarNrcRequest extends Request implements HasBody
     protected Method $method = Method::POST;
 
     public function __construct(
-        private readonly string $clave,
+        private readonly string $claveMateria,
         private readonly string $seccion,
         private readonly string $ciclo
     ) {}
@@ -29,7 +29,7 @@ final class BuscarNrcRequest extends Request implements HasBody
     protected function defaultBody(): array
     {
         return [
-            'clave' => $this->clave,
+            'claveMateria' => $this->claveMateria,
             'seccion' => $this->seccion,
             'ciclo' => $this->ciclo
         ];
@@ -38,10 +38,13 @@ final class BuscarNrcRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): mixed
+    public function createDtoFromResponse(Response $response): String|Error
     {
+        if($response->failed()) {
+            return new Error($response->json('error'));
+        }
         $data = $response->json();
 
-        return true;
+        return $data['nrc'];
     }
 }

@@ -6,6 +6,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
+use Siiau\ApiClient\Objects\Error;
 
 final class ValidarCredencialesRequest extends Request implements HasBody
 {
@@ -31,8 +32,12 @@ final class ValidarCredencialesRequest extends Request implements HasBody
         ];
     }
 
-    public function createDtoFromResponse(Response $response): bool
+    public function createDtoFromResponse(Response $response): bool|Error
     {
+        if($response->failed()) {
+            return new Error($response->json('error'));
+        }
+
         return $response->body() === '"true"';
     }
 }
