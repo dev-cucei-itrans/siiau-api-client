@@ -24,4 +24,5 @@ return (new Config())
         'no_unset_cast' => true,
         'lambda_not_used_import' => true,
         'group_import' => true,
+        'no_unused_imports' => true,
     ]);

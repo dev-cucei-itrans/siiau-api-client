@@ -1,5 +1,5 @@
 {
-    "name": "siiau/api-client",
+    "name": "dev-cucei-itrans/siiau-api-client",
     "description": "Simple SDK for interacting with SIIAU web service",
     "type": "library",
     "require": {
@@ -9,7 +9,8 @@
     },
     "require-dev": {
         "pestphp/pest": "^2.20",
-        "friendsofphp/php-cs-fixer": "^3.34"
+        "friendsofphp/php-cs-fixer": "^3.34",
+        "orchestra/testbench": "^8.13"
     },
     "license": "proprietary",
     "autoload": {
@@ -41,5 +42,12 @@
         "test": [
             "./vendor/bin/pest"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Siiau\\ApiClient\\SiiauApiClientServiceProvider"
+            ]
+        }
     }
 }
