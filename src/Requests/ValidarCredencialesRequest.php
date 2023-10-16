@@ -34,7 +34,7 @@ final class ValidarCredencialesRequest extends Request implements HasBody
 
     public function createDtoFromResponse(Response $response): bool|Error
     {
-        if($response->failed()) {
+        if($response->serverError()) {
             return new Error($response->json('error'));
         }
 

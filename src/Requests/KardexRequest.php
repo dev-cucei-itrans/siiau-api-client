@@ -38,7 +38,11 @@ final class KardexRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): Kardex|Error|null
     {
-        if($response->status() === 404) {
+        if($response->serverError()){
+            return new Error(message: $response->body());
+        }
+
+        if($response->status() === 404){
             return null;
         }
 

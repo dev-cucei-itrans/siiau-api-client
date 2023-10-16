@@ -20,7 +20,7 @@ final class UsuarioResource extends BaseResource
      * @throws ReflectionException
      * @throws Throwable
      */
-    public function validar(string $codigo, string $password): bool|Error|null
+    public function validar(string $codigo, string $password): bool|Error
     {
         return $this->connector->send(new ValidarCredencialesRequest(codigo: $codigo, password: $password))->dto();
     }

@@ -39,10 +39,13 @@ final class DetalleNrcRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): DetalleNrc|Error|null
     {
-        if($response->status() === 404) {
-            return null;
+        if($response->serverError()){
+            return new Error(message: $response->body());
         }
 
+        if($response->status() === 404){
+            return null;
+        }
         
         $data = $response->json();
         

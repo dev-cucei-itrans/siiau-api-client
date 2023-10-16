@@ -6,7 +6,7 @@ use Saloon\Http\Connector;
 use Siiau\ApiClient\Resources\{AlumnoResource, GeneralResource, UsuarioResource};
 
 final class SiiauConnector extends Connector
-{
+{    
     public function __construct(
         private readonly string $url,
     ) {}

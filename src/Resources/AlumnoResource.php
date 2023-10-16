@@ -10,7 +10,7 @@ use Siiau\ApiClient\Requests\HorarioRequest;
 use Siiau\ApiClient\Requests\KardexRequest;
 
 final class AlumnoResource extends BaseResource
-{
+{   
     public function obtener(string $codigo): Alumno|Error|null
     {
         return $this->connector->send(new GetAlumnoRequest(codigo: $codigo))->dto();
