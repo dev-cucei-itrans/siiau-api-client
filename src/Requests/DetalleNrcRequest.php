@@ -55,7 +55,7 @@ final class DetalleNrcRequest extends Request implements HasBody
         $siglasDias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB'];
         $dias = array();
 
-        foreach ($data['nrc'] as $horario) {
+        foreach($data['nrc'] as $horario) {
             $diasObtenidos = array_intersect_key($horario, array_flip($siglasDias));
             $diasFiltrados = array_filter($diasObtenidos, function($v){
                 return trim($v);
@@ -63,9 +63,6 @@ final class DetalleNrcRequest extends Request implements HasBody
             $dias = array_map(function ($siglaDia) {
                 return Dia::from($siglaDia);
             }, array_keys($diasFiltrados));
-        }
-
-        foreach($data['nrc'] as $horario) {
             $horarios[] = new HorarioMateria(
                 hora: $horario['horario'],
                 edificio: $horario['edificio'],
