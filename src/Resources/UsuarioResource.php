@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient\Resources;
 
-use Saloon\Http\{BaseResource, Response};
+use Saloon\Http\{BaseResource};
 use Siiau\ApiClient\Objects\Error;
 use Siiau\ApiClient\Objects\TipoUsuario;
 use Siiau\ApiClient\Objects\Usuario;
