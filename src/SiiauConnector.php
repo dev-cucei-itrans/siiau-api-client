@@ -3,7 +3,7 @@
 namespace Siiau\ApiClient;
 
 use Saloon\Http\Connector;
-use Siiau\ApiClient\Resources\{AlumnoResource, UsuarioResource};
+use Siiau\ApiClient\Resources\{AlumnoResource, GeneralResource, UsuarioResource};
 
 final class SiiauConnector extends Connector
 {
@@ -32,5 +32,10 @@ final class SiiauConnector extends Connector
     public function usuario(): UsuarioResource
     {
         return new UsuarioResource($this);
+    }
+
+    public function general(): GeneralResource
+    {
+        return new GeneralResource($this);
     }
 }

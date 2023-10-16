@@ -36,13 +36,18 @@ final class KardexRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): Kardex|Error
+    public function createDtoFromResponse(Response $response): Kardex|Error|null
     {
-        if($response->failed()) {
-            return new Error($response->json('error'));
+        if($response->status() === 404) {
+            return null;
         }
 
         $data = $response->json();
+
+        if($response->failed()) {
+            return new Error(message:$data->json('error'));
+        }
+
         $areas = array();
         $materias = array();
 
@@ -64,7 +69,7 @@ final class KardexRequest extends Request implements HasBody
                 descripcion: $materia['descripcion'],
                 creditos: $materia['creditos'],
                 fecha: new Fecha(
-                    fechaFin: $materia['fecha'],
+                    fin: $materia['fecha'],
                 ),
                 estatus: new EstatusMateria(
                     calificacion: $materia['calificacion'],
