@@ -6,8 +6,8 @@ enum Dia: String
 {
     case Lunes = "LUN";
     case Martes = "MAR";
-    case Miércoles = "MIE";
+    case Miercoles = "MIE";
     case Jueves = "JUE";
     case Viernes = "VIE";
-    case Sábado = "SAB";
+    case Sabado = "SAB";
 }
