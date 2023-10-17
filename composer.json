@@ -16,7 +16,10 @@
     "autoload": {
         "psr-4": {
             "Siiau\\ApiClient\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/Siiau.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
