@@ -2,28 +2,30 @@
 
 namespace Siiau\ApiClient\Resources;
 
+use Saloon\Http\{BaseResource};
+use Siiau\ApiClient\Objects\{Error, TipoUsuario, Usuario};
+use Siiau\ApiClient\Requests\{GetUsuarioRequest, TipoUsuarioRequest, ValidarCredencialesRequest};
 use ReflectionException;
-use Saloon\Http\{BaseResource, Response};
-use Siiau\ApiClient\Requests\{GetUsuarioRequest, ValidarCredencialesRequest};
 use Throwable;
 
 final class UsuarioResource extends BaseResource
 {
-    /**
-     * @throws ReflectionException
-     * @throws Throwable
-     */
-    public function obtener(string $codigo): Response
+    public function encontrar(string $codigo): Usuario|Error|null
     {
-        return $this->connector->send(new GetUsuarioRequest($codigo));
+        return $this->connector->send(new GetUsuarioRequest(codigo: $codigo))->dto();
     }
 
     /**
      * @throws ReflectionException
      * @throws Throwable
      */
-    public function validar(string $codigo, string $password): Response
+    public function credencialesValidas(string $codigo, string $password): bool|Error
     {
-        return $this->connector->send(new ValidarCredencialesRequest($codigo, $password));
+        return $this->connector->send(new ValidarCredencialesRequest(codigo: $codigo, password: $password))->dto();
+    }
+
+    public function tipo(string $codigo, string $password): TipoUsuario|Error|null
+    {
+        return $this->connector->send(new TipoUsuarioRequest(codigo: $codigo, password: $password))->dto();
     }
 }

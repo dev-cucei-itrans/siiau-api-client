@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Alumno, Ciclo, Error, Nombre};
+use Siiau\ApiClient\Objects\{Alumno, Carrera, Ciclo, Error, Estatus, Nombre, Universidad};
 
 final class GetAlumnoRequest extends Request implements HasBody
 {
@@ -40,19 +40,19 @@ final class GetAlumnoRequest extends Request implements HasBody
             return null;
         }
 
-        $data = $response->json();
-
         if ($response->failed()) {
-            return new Error(message: $data['error']);
+            return new Error(message: $response->body());
         }
 
+        $data = $response->json();
+
         return new Alumno(
-            carrera: $data['carrera'],
-            nombre: new Nombre($data['nombre'], $data['apellido']),
+            carrera: new Carrera(id: $data['carrera']),
+            nombre: new Nombre(nombres: $data['nombre'], apellidos: $data['apellido']),
             codigo: $data['codigo'],
-            situacion: $data['situacion'],
-            ultimoCiclo: new Ciclo($data['ultimo_ciclo'], $data['ultimo_cicloDesc']),
-            campus: $data['campus']
+            estatus: new Estatus(id: $data['situacion']),
+            ultimoCiclo: new Ciclo(id: $data['ultimo_ciclo'], descripcion: $data['ultimo_cicloDesc']),
+            campus: new Universidad(campus: $data['campus'])
         );
     }
 }
