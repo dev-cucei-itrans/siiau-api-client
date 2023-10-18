@@ -74,7 +74,6 @@ final class CarrerasAlumnoRequest extends Request implements HasBody
                 )
             );
         }
-        //$carreras = array_unique($carreras);
         return $carreras;
     }
 }

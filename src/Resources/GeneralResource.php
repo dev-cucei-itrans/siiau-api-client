@@ -3,12 +3,13 @@
 namespace Siiau\ApiClient\Resources;
 
 use Saloon\Http\{BaseResource};
+use Siiau\ApiClient\Collections\CarreraCollection;
 use Siiau\ApiClient\Objects\{DetalleNrc, Error};
 use Siiau\ApiClient\Requests\{BuscarNrcRequest, DetalleNrcRequest, GetCarrerasCentroRequest};
 
 final class GeneralResource extends BaseResource
 {
-    public function carreras(string $siglas): array|Error|null
+    public function carreras(string $siglas): CarreraCollection|Error|null
     {
         return $this->connector->send(new GetCarrerasCentroRequest(siglas: $siglas))->dto();
     }

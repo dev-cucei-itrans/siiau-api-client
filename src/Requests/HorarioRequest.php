@@ -7,8 +7,9 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
+use Siiau\ApiClient\Collections\{DiaCollection, HorarioCollection, MateriaCollection};
 use Siiau\ApiClient\Enums\Dia;
-use Siiau\ApiClient\Objects\{Error, Periodo, Horario, HorarioMateria, Materia, Profesor};
+use Siiau\ApiClient\Objects\{Error, Periodo, HorarioMateria, Materia, Profesor};
 
 final class HorarioRequest extends Request implements HasBody
 {
@@ -37,7 +38,7 @@ final class HorarioRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): Horario|Error|null
+    public function createDtoFromResponse(Response $response): MateriaCollection|Error|null
     {
         if ($response->status() === 404) {
             return null;
@@ -49,7 +50,7 @@ final class HorarioRequest extends Request implements HasBody
 
         $data = $response->json();
 
-        $materias = [];
+        $materias = new MateriaCollection();
         $siglasDias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB'];
 
         foreach($data as $materia) {
@@ -58,13 +59,22 @@ final class HorarioRequest extends Request implements HasBody
                 $dias = array_map(function ($siglaDia) {
                     return Dia::from($siglaDia);
                 }, array_keys($diasFiltrados));
+                $diasCollection = array_reduce($dias, function ($collection, $horario) {
+                    $collection->add($horario);
+                    return $collection;
+                }, new DiaCollection());
                 return new HorarioMateria(
                     hora: $horario['hora'],
                     edificio: $horario['edificio'],
                     aula: $horario['aula'],
-                    dias: $dias,
+                    dias: $diasCollection,
                 );
             }, $materia['Horario']);
+
+            $horarioCollection = array_reduce($horarios, function ($collection, $horario) {
+                $collection->add($horario);
+                return $collection;
+            }, new HorarioCollection());
 
             $materias[] = new Materia(
                 nrc: $materia['nrc'],
@@ -72,7 +82,7 @@ final class HorarioRequest extends Request implements HasBody
                 descripcion: $materia['descripcion'],
                 creditos: $materia['creditos'],
                 seccion: $materia['seccion'],
-                horario: $horarios,
+                horario: $horarioCollection,
                 periodo: new Periodo(
                     inicio: $materia['fechaInicio'],
                     fin: $materia['fechaFin'],
@@ -84,8 +94,6 @@ final class HorarioRequest extends Request implements HasBody
             );
         }
 
-        return new Horario(
-            materias: $materias,
-        );
+        return $materias;
     }
 }

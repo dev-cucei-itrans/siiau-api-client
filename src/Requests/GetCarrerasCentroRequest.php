@@ -7,6 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
+use Siiau\ApiClient\Collections\CarreraCollection;
 use Siiau\ApiClient\Objects\{Carrera, Error};
 
 final class GetCarrerasCentroRequest extends Request implements HasBody
@@ -34,7 +35,7 @@ final class GetCarrerasCentroRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): array|Error|null
+    public function createDtoFromResponse(Response $response): CarreraCollection|Error|null
     {
         if ($response->status() === 404) {
             return null;
@@ -46,7 +47,7 @@ final class GetCarrerasCentroRequest extends Request implements HasBody
 
         $data = $response->json();
 
-        $carreras = [];
+        $carreras = new CarreraCollection();
 
         foreach ($data as $carrera) {
             $carreras[] = new Carrera(

@@ -9,18 +9,18 @@ use Siiau\ApiClient\Requests\{BuscarNrcRequest,
     GetUsuarioRequest,
     HorarioRequest,
     KardexRequest,
-    TipoUsuarioRequest};
+    TipoUsuarioRequest, ValidarCredencialesRequest};
 
 it('usuario', function () {
     $response = Siiau::send(new GetUsuarioRequest(codigo: '1234567890')); // Replace with a valid code
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('alumno', function () {
     $response = Siiau::send(new GetAlumnoRequest(codigo: '1234567890')); // Replace with a valid code
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('buscar-nrc', function () {
@@ -31,7 +31,7 @@ it('buscar-nrc', function () {
         ciclo: '2021B',
     ));
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('detalle-nrc', function () {
@@ -41,7 +41,7 @@ it('detalle-nrc', function () {
         ciclo: '2019B',
     ));
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('get carreras alumno', function () {
@@ -50,7 +50,7 @@ it('get carreras alumno', function () {
         codigo: '1234567890',
     ));
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('kardex request', function () {
@@ -60,7 +60,7 @@ it('kardex request', function () {
         carrera: 'INNI',
     ));
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('tipo de usuario', function () {
@@ -70,17 +70,17 @@ it('tipo de usuario', function () {
         password: 'esta-es-una-contraseña-falsa',
     ));
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('horario', function () {
 
     $response = Siiau::send(new HorarioRequest(
         codigo: '1234567890',
-        ciclo: '2022B',
+        ciclo: '202220',
     ));
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
 });
 
 it('carreras centro', function () {
@@ -89,5 +89,15 @@ it('carreras centro', function () {
         siglas: 'CUCEI',
     ));
 
-    dd($response->dto());
+    expect($response->ok())->toBeTrue();
+});
+
+it('validar credenciales', function () {
+
+    $response = Siiau::send(new ValidarCredencialesRequest(
+        codigo: '216508551',
+        password: 'esta-es-una-contraseña-falsa'
+    ));
+
+    expect($response->ok())->toBeTrue();
 });

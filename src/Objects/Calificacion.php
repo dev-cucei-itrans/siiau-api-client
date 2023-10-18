@@ -2,10 +2,10 @@
 
 namespace Siiau\ApiClient\Objects;
 
-final class EstatusMateria
+final class Calificacion
 {
     public function __construct(
-        public readonly ?string $calificacion,
+        public readonly ?string $valor,
         public readonly ?string $tipo,
     ) {}
 }

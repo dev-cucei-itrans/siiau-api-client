@@ -5,7 +5,7 @@ namespace Siiau\ApiClient\Resources;
 use Saloon\Http\BaseResource;
 use Siiau\ApiClient\Objects\{Alumno, Error, Horario, Kardex};
 use Siiau\ApiClient\Requests\{CarrerasAlumnoRequest, GetAlumnoRequest, HorarioRequest, KardexRequest};
-use Siiau\ApiClient\Collections\CarreraAlumnoCollection;
+use Siiau\ApiClient\Collections\{CarreraAlumnoCollection, MateriaCollection};
 
 final class AlumnoResource extends BaseResource
 {
@@ -24,7 +24,7 @@ final class AlumnoResource extends BaseResource
         return $this->connector->send(new KardexRequest(codigo: $codigo, carrera: $carrera))->dto();
     }
 
-    public function horario(string $codigo, string $ciclo): Horario|Error|null
+    public function horario(string $codigo, string $ciclo): MateriaCollection|Error|null
     {
         return $this->connector->send(new HorarioRequest(codigo: $codigo, ciclo: $ciclo))->dto();
     }
