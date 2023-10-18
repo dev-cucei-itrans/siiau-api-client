@@ -9,6 +9,8 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
+use Siiau\ApiClient\Exceptions\InvalidCredentialsException;
+use Throwable;
 
 #[NonAuthenticable]
 final class LoginRequest extends Request implements HasBody
@@ -35,13 +37,23 @@ final class LoginRequest extends Request implements HasBody
         ];
     }
 
+    public function getRequestException(
+        Response $response,
+        ?Throwable $senderException
+    ): ?Throwable {
+        return match (true) {
+            $response->clientError() => InvalidCredentialsException::fromResponse($response, $senderException),
+            default => null
+        };
+    }
+
     /**
      * @throws JsonException
      */
     public function createDtoFromResponse(Response $response): Token|Error
     {
         if ($response->failed()) {
-            return new Error($response->json('error'));
+            return new Error($response->body());
         }
 
         return new Token(
