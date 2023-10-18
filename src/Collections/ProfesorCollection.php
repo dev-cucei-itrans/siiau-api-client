@@ -8,4 +8,4 @@ use Siiau\ApiClient\Objects\Profesor;
 /**
  * @extends Collection<int, Profesor>
  */
-final class ProfesoresCollection extends Collection {}
+final class ProfesorCollection extends Collection {}

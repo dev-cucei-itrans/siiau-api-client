@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient\Objects;
 
-use Siiau\ApiClient\Collections\{HorarioCollection, ProfesoresCollection};
+use Siiau\ApiClient\Collections\{HorarioCollection, ProfesorCollection};
 
 final class DetalleNrc
 {
@@ -10,7 +10,7 @@ final class DetalleNrc
         public readonly string  $cupo,
         public readonly string  $disponibilidad,
         public readonly HorarioCollection   $horario,
-        public readonly ProfesoresCollection   $profesor,
+        public readonly ProfesorCollection   $profesor,
         public readonly Periodo $periodo,
     ) {}
 }

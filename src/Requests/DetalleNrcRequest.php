@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Collections\{DiaCollection, HorarioCollection, ProfesoresCollection};
+use Siiau\ApiClient\Collections\{DiaCollection, HorarioCollection, ProfesorCollection};
 use Siiau\ApiClient\Enums\Dia;
 use Siiau\ApiClient\Objects\{DetalleNrc, Error, Periodo, HorarioMateria, Profesor};
 
@@ -51,7 +51,7 @@ final class DetalleNrcRequest extends Request implements HasBody
         $data = $response->json();
 
         $horarios = new HorarioCollection();
-        $profesores = new ProfesoresCollection();
+        $profesores = new ProfesorCollection();
         $siglasDias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB'];
 
         foreach($data['nrc'] as $horario) {
