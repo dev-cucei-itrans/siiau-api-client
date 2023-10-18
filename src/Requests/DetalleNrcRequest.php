@@ -8,7 +8,7 @@ use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
 use Siiau\ApiClient\Enums\Dia;
-use Siiau\ApiClient\Objects\{DetalleNrc, Error, Fecha, HorarioMateria, Profesor};
+use Siiau\ApiClient\Objects\{DetalleNrc, Error, Periodo, HorarioMateria, Profesor};
 
 final class DetalleNrcRequest extends Request implements HasBody
 {
@@ -39,24 +39,19 @@ final class DetalleNrcRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): DetalleNrc|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
+        if ($response->status() === 404) {
+            return null;
         }
 
-        if($response->status() === 404) {
-            return null;
+        if ($response->failed()) {
+            return new Error(message: $response->body());
         }
 
         $data = $response->json();
 
-        if($response->failed()) {
-            return new Error(message: $data->json('error'));
-        }
-
-        $horarios = array();
-        $profesores = array();
+        $horarios = [];
+        $profesores = [];
         $siglasDias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB'];
-        $dias = array();
 
         foreach($data['nrc'] as $horario) {
             $diasObtenidos = array_intersect_key($horario, array_flip($siglasDias));
@@ -72,20 +67,20 @@ final class DetalleNrcRequest extends Request implements HasBody
                 aula: $horario['aula'],
                 dias: $dias
             );
-        };
+        }
 
         foreach($data['profesores'] as $profesor) {
             $profesores[] = new Profesor(
                 codigo: $profesor['codigoProfesor']
             );
-        };
+        }
 
         return new DetalleNrc(
             cupo: $data['cupo'],
             disponibilidad: $data['disp'],
             horario: $horarios,
             profesor: $profesores,
-            fecha: new Fecha(
+            periodo: new Periodo(
                 inicio: $data['fechaInicio'],
                 fin: $data['fechaFin'],
             ),

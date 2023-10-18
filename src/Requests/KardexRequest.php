@@ -7,7 +7,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Ciclo, Creditos, CreditosArea, Error, EstatusMateria, Fecha, Kardex, Materia};
+use Siiau\ApiClient\Objects\{Ciclo, Creditos, CreditosArea, Error, EstatusMateria, Periodo, Kardex, Materia};
 
 final class KardexRequest extends Request implements HasBody
 {
@@ -38,24 +38,20 @@ final class KardexRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): Kardex|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
+        if ($response->status() === 404) {
+            return null;
         }
 
-        if($response->status() === 404) {
-            return null;
+        if ($response->failed()) {
+            return new Error(message: $response->body());
         }
 
         $data = $response->json();
 
-        if($response->failed()) {
-            return new Error(message:$data->json('error'));
-        }
+        $areas = [];
+        $materias = [];
 
-        $areas = array();
-        $materias = array();
-
-        foreach($data['creditosArea'] as $area) {
+        foreach ($data['creditosArea'] as $area) {
             $areas[] = new CreditosArea(
                 creditos: new Creditos(
                     adquiridos: $area['creditosAdquiridos'],
@@ -66,13 +62,13 @@ final class KardexRequest extends Request implements HasBody
             );
         }
 
-        foreach($data['materias'] as $materia) {
+        foreach ($data['materias'] as $materia) {
             $materias[] = new Materia(
                 nrc: $materia['nrc'],
                 clave: $materia['clave'],
                 descripcion: $materia['descripcion'],
                 creditos: $materia['creditos'],
-                fecha: new Fecha(
+                periodo: new Periodo(
                     fin: $materia['fecha'],
                 ),
                 estatus: new EstatusMateria(

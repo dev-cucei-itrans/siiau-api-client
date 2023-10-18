@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient\Objects;
 
-final class Fecha
+final class Periodo
 {
     public function __construct(
         public readonly ?string $inicio = null,

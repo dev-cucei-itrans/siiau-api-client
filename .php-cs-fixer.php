@@ -25,4 +25,5 @@ return (new Config())
         'lambda_not_used_import' => true,
         'group_import' => true,
         'no_unused_imports' => true,
+        'array_syntax' => ['syntax' => 'short'],
     ]);

@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient\Objects;
 
-final class CarrerasAlumno
+final class CarreraAlumno
 {
     public function __construct(
         public readonly Carrera $carrera,

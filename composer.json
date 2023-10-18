@@ -5,7 +5,8 @@
     "require": {
         "php": "^8.1",
         "saloonphp/saloon": "^3.0",
-        "saloonphp/laravel-plugin": "^3.0"
+        "saloonphp/laravel-plugin": "^3.0",
+        "illuminate/collections": "*"
     },
     "require-dev": {
         "pestphp/pest": "^2.20",

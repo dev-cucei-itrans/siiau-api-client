@@ -38,20 +38,21 @@ final class TipoUsuarioRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): TipoUsuario|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
-        }
-
         if($response->status() === 404) {
             return null;
         }
 
-        $data = $response->json();
-
         if($response->failed()) {
-            return new Error(message: $data->json('error'));
+            return new Error(message: $response->body());
         }
 
-        return new TipoUsuario(tipo: $data['tipoUsuario'], estatus: new Estatus(descripcion: $data['estatus']));
+        $data = $response->json();
+
+        return new TipoUsuario(
+            tipo: $data['tipoUsuario'],
+            estatus: new Estatus(
+                descripcion: $data['estatus']
+            )
+        );
     }
 }

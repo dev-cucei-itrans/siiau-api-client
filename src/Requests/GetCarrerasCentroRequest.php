@@ -36,23 +36,19 @@ final class GetCarrerasCentroRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): array|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
+        if ($response->status() === 404) {
+            return null;
         }
 
-        if($response->status() === 404) {
-            return null;
+        if ($response->failed()) {
+            return new Error(message: $response->body());
         }
 
         $data = $response->json();
 
-        if($response->failed()) {
-            return new Error(message: $data->json('error'));
-        }
+        $carreras = [];
 
-        $carreras = array();
-
-        foreach($data as $carrera) {
+        foreach ($data as $carrera) {
             $carreras[] = new Carrera(
                 id: $carrera['clave'],
                 descripcion: $carrera['descripcion'],

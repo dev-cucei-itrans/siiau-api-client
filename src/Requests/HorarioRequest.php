@@ -8,7 +8,7 @@ use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
 use Siiau\ApiClient\Enums\Dia;
-use Siiau\ApiClient\Objects\{Error, Fecha, Horario, HorarioMateria, Materia, Profesor};
+use Siiau\ApiClient\Objects\{Error, Periodo, Horario, HorarioMateria, Materia, Profesor};
 
 final class HorarioRequest extends Request implements HasBody
 {
@@ -39,24 +39,18 @@ final class HorarioRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): Horario|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
+        if ($response->status() === 404) {
+            return null;
         }
 
-        if($response->status() === 404) {
-            return null;
+        if ($response->serverError()) {
+            return new Error(message: $response->body());
         }
 
         $data = $response->json();
 
-        if($response->failed()) {
-            return new Error(message: $data->json('error'));
-        }
-
-        $materias = array();
-        $horarios = array();
+        $materias = [];
         $siglasDias = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB'];
-
 
         foreach($data as $materia) {
             $horarios = array_map(function ($horario) use ($siglasDias) {
@@ -66,8 +60,8 @@ final class HorarioRequest extends Request implements HasBody
                 }, array_keys($diasFiltrados));
                 return new HorarioMateria(
                     hora: $horario['hora'],
-                    aula: $horario['aula'],
                     edificio: $horario['edificio'],
+                    aula: $horario['aula'],
                     dias: $dias,
                 );
             }, $materia['Horario']);
@@ -75,17 +69,17 @@ final class HorarioRequest extends Request implements HasBody
             $materias[] = new Materia(
                 nrc: $materia['nrc'],
                 clave: $materia['clave'],
-                seccion: $materia['seccion'],
                 descripcion: $materia['descripcion'],
                 creditos: $materia['creditos'],
+                seccion: $materia['seccion'],
                 horario: $horarios,
-                fecha: new Fecha(
+                periodo: new Periodo(
                     inicio: $materia['fechaInicio'],
                     fin: $materia['fechaFin'],
                 ),
                 profesor: new Profesor(
-                    nombre: $materia['nombreProfesor'],
                     codigo: $materia['codigoProfesor'],
+                    nombre: $materia['nombreProfesor'],
                 ),
             );
         }

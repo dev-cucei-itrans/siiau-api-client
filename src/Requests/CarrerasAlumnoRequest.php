@@ -7,7 +7,8 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
-use Siiau\ApiClient\Objects\{Carrera, CarrerasAlumno, Ciclo, Error, Estatus, Universidad};
+use Siiau\ApiClient\Objects\{Carrera, CarreraAlumno, Ciclo, Error, Estatus, Universidad};
+use Siiau\ApiClient\Collections\CarreraAlumnoCollection;
 
 final class CarrerasAlumnoRequest extends Request implements HasBody
 {
@@ -34,26 +35,22 @@ final class CarrerasAlumnoRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): array|Error|null
+    public function createDtoFromResponse(Response $response): CarreraAlumnoCollection|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
+        if ($response->status() === 404) {
+            return null;
         }
 
-        if($response->status() === 404) {
-            return null;
+        if ($response->failed()) {
+            return new Error(message: $response->body());
         }
 
         $data = $response->json();
 
-        if($response->failed()) {
-            return new Error(message: $data->json('error'));
-        }
-
-        $carreras = array();
+        $carreras = new CarreraAlumnoCollection();
 
         foreach($data as $carrera) {
-            $carreras[] = new CarrerasAlumno(
+            $carreras[] = new CarreraAlumno(
                 carrera: new Carrera(
                     id: $carrera['carreraId'],
                     descripcion: $carrera['carreraDesc'],
@@ -72,8 +69,8 @@ final class CarrerasAlumnoRequest extends Request implements HasBody
                 ),
                 nivel: $carrera['nivel'],
                 universidad: new Universidad(
-                    sede: $carrera['sede'],
                     campus: $carrera['campus'],
+                    sede: $carrera['sede'],
                 )
             );
         }

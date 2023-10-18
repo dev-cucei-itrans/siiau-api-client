@@ -37,19 +37,15 @@ final class GetUsuarioRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): Usuario|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
-        }
-
-        if($response->status() === 404) {
+        if ($response->status() === 404) {
             return null;
         }
 
-        $data = $response->json();
-
-        if($response->failed()) {
-            return new Error(message: $data->json('error'));
+        if ($response->failed()) {
+            return new Error(message: $response->body());
         }
+
+        $data = $response->json();
 
         return new Usuario(
             estadoCivil: $data['edo_civil'],

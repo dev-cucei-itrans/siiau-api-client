@@ -40,20 +40,14 @@ final class BuscarNrcRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): string|Error|null
     {
-        if($response->serverError()) {
-            return new Error(message: $response->body());
-        }
-
-        if($response->status() === 404) {
+        if ($response->status() === 404) {
             return null;
         }
 
-        $data = $response->json();
-
-        if($response->failed()) {
-            return new Error(message: $data->json('error'));
+        if ($response->failed()) {
+            return new Error(message: $response->body());
         }
 
-        return $data['nrc'];
+        return $response->json('nrc');
     }
 }
