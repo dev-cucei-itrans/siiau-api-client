@@ -10,7 +10,7 @@ use Throwable;
 
 final class UsuarioResource extends BaseResource
 {
-    public function obtener(string $codigo): Usuario|Error|null
+    public function encontrar(string $codigo): Usuario|Error|null
     {
         return $this->connector->send(new GetUsuarioRequest(codigo: $codigo))->dto();
     }
@@ -19,7 +19,7 @@ final class UsuarioResource extends BaseResource
      * @throws ReflectionException
      * @throws Throwable
      */
-    public function validar(string $codigo, string $password): bool|Error
+    public function credencialesValidas(string $codigo, string $password): bool|Error
     {
         return $this->connector->send(new ValidarCredencialesRequest(codigo: $codigo, password: $password))->dto();
     }

@@ -95,7 +95,7 @@ it('carreras centro', function () {
 it('validar credenciales', function () {
 
     $response = Siiau::send(new ValidarCredencialesRequest(
-        codigo: '216508551',
+        codigo: '1234567890',
         password: 'esta-es-una-contraseña-falsa'
     ));
 

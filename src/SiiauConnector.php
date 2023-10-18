@@ -2,7 +2,7 @@
 
 namespace Siiau\ApiClient;
 
-use Siiau\ApiClient\Resources\{AlumnoResource, UsuarioResource, GeneralResource};
+use Siiau\ApiClient\Resources\{AlumnoResource, CarreraResource, UsuarioResource, KardexResource, MateriaResource};
 use Saloon\Http\{Connector, Response};
 use Siiau\ApiClient\Exceptions\{ClientException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
 use Throwable;
@@ -42,9 +42,28 @@ final class SiiauConnector extends Connector
         return new UsuarioResource($this);
     }
 
-    public function general(): GeneralResource
+    /**
+     * Obtiene el recurso de materia.
+     */
+    public function materia(): MateriaResource
     {
-        return new GeneralResource($this);
+        return new MateriaResource($this);
+    }
+
+    /**
+     * Obtiene el recurso de kardex.
+     */
+    public function kardex(): KardexResource
+    {
+        return new KardexResource($this);
+    }
+
+    /**
+     * Obtiene el recurso de carrera.
+     */
+    public function carrera(): CarreraResource
+    {
+        return new CarreraResource($this);
     }
 
     public function getRequestException(
