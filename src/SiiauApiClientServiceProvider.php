@@ -11,16 +11,19 @@ final class SiiauApiClientServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'siiau');
 
-        $this->app->singleton(SiiauConnector::class, static function () {
-            $connector = new SiiauConnector(url: config('siiau.base_url'));
+        $this->app->singleton(
+            abstract: SiiauConnector::class,
+            concrete: static function (): SiiauConnector {
+                $connector = new SiiauConnector(url: config('siiau.base_url'));
 
-            $connector->authenticate(new SiiauAuthenticator(new LoginRequest(
-                email: config('siiau.email'),
-                password: config('siiau.password'),
-            )));
+                $connector->authenticate(new SiiauAuthenticator(new LoginRequest(
+                    email: config('siiau.email'),
+                    password: config('siiau.password'),
+                )));
 
-            return $connector;
-        });
+                return $connector;
+            }
+        );
     }
 
     public function boot(): void
