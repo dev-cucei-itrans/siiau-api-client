@@ -39,11 +39,11 @@ final class HorarioRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): Horario|Error|null
     {
-        if($response->serverError()){
+        if($response->serverError()) {
             return new Error(message: $response->body());
         }
 
-        if($response->status() === 404){
+        if($response->status() === 404) {
             return null;
         }
 
@@ -59,7 +59,7 @@ final class HorarioRequest extends Request implements HasBody
 
 
         foreach($data as $materia) {
-            $horarios = array_map(function ($horario) use ($siglasDias){
+            $horarios = array_map(function ($horario) use ($siglasDias) {
                 $diasFiltrados = array_intersect_key($horario, array_flip($siglasDias));
                 $dias = array_map(function ($siglaDia) {
                     return Dia::from($siglaDia);

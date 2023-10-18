@@ -2,12 +2,10 @@
 
 namespace Siiau\ApiClient;
 
-use Siiau\ApiClient\Resources\{AlumnoResource, UsuarioResource};
+use Siiau\ApiClient\Resources\{AlumnoResource, UsuarioResource, GeneralResource};
 use Saloon\Http\{Connector, Response};
 use Siiau\ApiClient\Exceptions\{ClientException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
 use Throwable;
-use Saloon\Http\Connector;
-use Siiau\ApiClient\Resources\{AlumnoResource, GeneralResource, UsuarioResource};
 
 final class SiiauConnector extends Connector
 {

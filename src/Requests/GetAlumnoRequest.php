@@ -36,11 +36,11 @@ final class GetAlumnoRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): Alumno|Error|null
     {
-        if($response->serverError()){
+        if($response->serverError()) {
             return new Error(message: $response->body());
         }
 
-        if($response->status() === 404){
+        if($response->status() === 404) {
             return null;
         }
 

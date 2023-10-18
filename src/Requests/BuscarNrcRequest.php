@@ -38,13 +38,13 @@ final class BuscarNrcRequest extends Request implements HasBody
     /**
      * @throws JsonException
      */
-    public function createDtoFromResponse(Response $response): String|Error|null
+    public function createDtoFromResponse(Response $response): string|Error|null
     {
-        if($response->serverError()){
+        if($response->serverError()) {
             return new Error(message: $response->body());
         }
 
-        if($response->status() === 404){
+        if($response->status() === 404) {
             return null;
         }
 

@@ -9,7 +9,7 @@ final class CarrerasAlumno
         public readonly Ciclo $cicloAdmision,
         public readonly Ciclo $ultimoCiclo,
         public readonly Estatus $estatus,
-        public readonly String $nivel,
+        public readonly string $nivel,
         public readonly Universidad $universidad,
     ) {}
 }

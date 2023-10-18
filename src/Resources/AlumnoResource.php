@@ -4,13 +4,10 @@ namespace Siiau\ApiClient\Resources;
 
 use Saloon\Http\BaseResource;
 use Siiau\ApiClient\Objects\{Alumno, Error, Horario, Kardex};
-use Siiau\ApiClient\Requests\CarrerasAlumnoRequest;
-use Siiau\ApiClient\Requests\GetAlumnoRequest;
-use Siiau\ApiClient\Requests\HorarioRequest;
-use Siiau\ApiClient\Requests\KardexRequest;
+use Siiau\ApiClient\Requests\{CarrerasAlumnoRequest, GetAlumnoRequest, HorarioRequest, KardexRequest};
 
 final class AlumnoResource extends BaseResource
-{   
+{
     public function obtener(string $codigo): Alumno|Error|null
     {
         return $this->connector->send(new GetAlumnoRequest(codigo: $codigo))->dto();

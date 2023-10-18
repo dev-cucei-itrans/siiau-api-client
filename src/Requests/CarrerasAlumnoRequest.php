@@ -36,14 +36,14 @@ final class CarrerasAlumnoRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): array|Error|null
     {
-        if($response->serverError()){
+        if($response->serverError()) {
             return new Error(message: $response->body());
         }
 
-        if($response->status() === 404){
+        if($response->status() === 404) {
             return null;
         }
-        
+
         $data = $response->json();
 
         if($response->failed()) {

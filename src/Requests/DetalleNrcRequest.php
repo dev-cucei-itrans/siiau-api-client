@@ -39,16 +39,16 @@ final class DetalleNrcRequest extends Request implements HasBody
      */
     public function createDtoFromResponse(Response $response): DetalleNrc|Error|null
     {
-        if($response->serverError()){
+        if($response->serverError()) {
             return new Error(message: $response->body());
         }
 
-        if($response->status() === 404){
+        if($response->status() === 404) {
             return null;
         }
-        
+
         $data = $response->json();
-        
+
         if($response->failed()) {
             return new Error(message: $data->json('error'));
         }
@@ -60,7 +60,7 @@ final class DetalleNrcRequest extends Request implements HasBody
 
         foreach($data['nrc'] as $horario) {
             $diasObtenidos = array_intersect_key($horario, array_flip($siglasDias));
-            $diasFiltrados = array_filter($diasObtenidos, function($v){
+            $diasFiltrados = array_filter($diasObtenidos, function ($v) {
                 return trim($v);
             });
             $dias = array_map(function ($siglaDia) {

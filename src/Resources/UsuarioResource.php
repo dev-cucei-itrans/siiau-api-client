@@ -3,10 +3,9 @@
 namespace Siiau\ApiClient\Resources;
 
 use Saloon\Http\{BaseResource};
-use Siiau\ApiClient\Objects\Error;
-use Siiau\ApiClient\Objects\TipoUsuario;
-use Siiau\ApiClient\Objects\Usuario;
+use Siiau\ApiClient\Objects\{Error, TipoUsuario, Usuario};
 use Siiau\ApiClient\Requests\{GetUsuarioRequest, TipoUsuarioRequest, ValidarCredencialesRequest};
+use ReflectionException;
 use Throwable;
 
 final class UsuarioResource extends BaseResource
