@@ -5,12 +5,14 @@
     "require": {
         "php": "^8.1",
         "saloonphp/saloon": "^3.0",
-        "saloonphp/laravel-plugin": "^3.0"
+        "saloonphp/laravel-plugin": "^3.0",
+        "illuminate/collections": "*"
     },
     "require-dev": {
         "pestphp/pest": "^2.20",
         "friendsofphp/php-cs-fixer": "^3.34",
-        "orchestra/testbench": "^8.13"
+        "orchestra/testbench": "^8.13",
+        "laravel/facade-documenter": "dev-main"
     },
     "license": "proprietary",
     "autoload": {
@@ -51,6 +53,12 @@
             "providers": [
                 "Siiau\\ApiClient\\SiiauApiClientServiceProvider"
             ]
+        }
+    },
+    "repositories": {
+        "facade-documenter": {
+            "type": "vcs",
+            "url": "git@github.com:laravel/facade-documenter.git"
         }
     }
 }
