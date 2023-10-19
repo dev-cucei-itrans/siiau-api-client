@@ -1,31 +1,30 @@
 <?php
 
-use Siiau\ApiClient\Facades\Siiau;
 use Siiau\ApiClient\Requests\{BuscarNrcRequest,
     CarrerasAlumnoRequest,
     DetalleNrcRequest,
     GetAlumnoRequest,
     GetCarrerasCentroRequest,
-    GetUsuarioRequest,
     HorarioRequest,
     KardexRequest,
     TipoUsuarioRequest, ValidarCredencialesRequest};
+use Siiau\ApiClient\Objects\{Alumno, Usuario};
 
 it('usuario', function () {
-    $response = Siiau::send(new GetUsuarioRequest(codigo: '1234567890')); // Replace with a valid code
+    $usuario = siiau()->usuario()->encontrar(codigo: '1234567890'); // Replace with a valid code.
 
-    expect($response->ok())->toBeTrue();
+    expect($usuario)->toBeInstanceOf(Alumno::class);
 });
 
 it('alumno', function () {
-    $response = Siiau::send(new GetAlumnoRequest(codigo: '1234567890')); // Replace with a valid code
+    $alumno = siiau()->alumno()->encontrar(codigo: '1234567890'); // Replace with a valid code
 
-    expect($response->ok())->toBeTrue();
+    expect($alumno)->toBeInstanceOf(Usuario::class);
 });
 
-it('buscar-nrc', function () {
+it('buscar nrc', function () {
 
-    $response = Siiau::send(new BuscarNrcRequest(
+    $response = siiau()->send(new BuscarNrcRequest(
         claveMateria: 'I5915',
         seccion: 'D05', // TODO: Add seccion to the request
         ciclo: '2021B',
@@ -36,7 +35,7 @@ it('buscar-nrc', function () {
 
 it('detalle-nrc', function () {
 
-    $response = Siiau::send(new DetalleNrcRequest(
+    $response = siiau()->send(new DetalleNrcRequest(
         nrc: '125213',
         ciclo: '2019B',
     ));
@@ -46,7 +45,7 @@ it('detalle-nrc', function () {
 
 it('get carreras alumno', function () {
 
-    $response = Siiau::send(new CarrerasAlumnoRequest(
+    $response = siiau()->send(new CarrerasAlumnoRequest(
         codigo: '1234567890',
     ));
 
@@ -55,7 +54,7 @@ it('get carreras alumno', function () {
 
 it('kardex request', function () {
 
-    $response = Siiau::send(new KardexRequest(
+    $response = siiau()->send(new KardexRequest(
         codigo: '1234567890',
         carrera: 'INNI',
     ));
@@ -65,7 +64,7 @@ it('kardex request', function () {
 
 it('tipo de usuario', function () {
 
-    $response = Siiau::send(new TipoUsuarioRequest(
+    $response = siiau()->send(new TipoUsuarioRequest(
         codigo: '1234567890',
         password: 'esta-es-una-contraseña-falsa',
     ));
@@ -75,7 +74,7 @@ it('tipo de usuario', function () {
 
 it('horario', function () {
 
-    $response = Siiau::send(new HorarioRequest(
+    $response = siiau()->send(new HorarioRequest(
         codigo: '1234567890',
         ciclo: '202220',
     ));
@@ -85,7 +84,7 @@ it('horario', function () {
 
 it('carreras centro', function () {
 
-    $response = Siiau::send(new GetCarrerasCentroRequest(
+    $response = siiau()->send(new GetCarrerasCentroRequest(
         siglas: 'CUCEI',
     ));
 
@@ -94,7 +93,7 @@ it('carreras centro', function () {
 
 it('validar credenciales', function () {
 
-    $response = Siiau::send(new ValidarCredencialesRequest(
+    $response = siiau()->send(new ValidarCredencialesRequest(
         codigo: '1234567890',
         password: 'esta-es-una-contraseña-falsa'
     ));
