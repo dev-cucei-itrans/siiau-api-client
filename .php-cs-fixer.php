@@ -26,4 +26,6 @@ return (new Config())
         'group_import' => true,
         'no_unused_imports' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'simplified_if_return' => true,
+        'not_operator_with_successor_space' => true
     ]);
