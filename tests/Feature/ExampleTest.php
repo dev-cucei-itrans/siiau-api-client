@@ -3,7 +3,6 @@
 use Siiau\ApiClient\Requests\{BuscarNrcRequest,
     CarrerasAlumnoRequest,
     DetalleNrcRequest,
-    GetAlumnoRequest,
     GetCarrerasCentroRequest,
     HorarioRequest,
     KardexRequest,
