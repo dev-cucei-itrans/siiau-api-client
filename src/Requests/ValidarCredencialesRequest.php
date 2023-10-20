@@ -6,10 +6,12 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\{Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
+use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
 use Siiau\ApiClient\Objects\Error;
 
 final class ValidarCredencialesRequest extends Request implements HasBody
 {
+    use AlwaysThrowOnErrors;
     use HasJsonBody;
 
     protected Method $method = Method::POST;
@@ -30,6 +32,11 @@ final class ValidarCredencialesRequest extends Request implements HasBody
             'codigo' => $this->codigo,
             'password' => $this->password,
         ];
+    }
+
+    public function shouldThrowRequestException(Response $response): bool
+    {
+        return $response->serverError();
     }
 
     public function createDtoFromResponse(Response $response): bool|Error
