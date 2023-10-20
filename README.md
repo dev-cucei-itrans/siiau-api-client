@@ -1,27 +1,34 @@
 # SIIAU API Client
+## _Simple SDK for interacting with SIIAU web service_
 
-Simple SDK for interacting with SIIAU web service
+### Documentación adicional
+[SIIAU API Client](https://app.gitbook.com/o/FkcKGebEVUJFrMnsK8ah/s/L4rTuWQMb44ymVnv3W9H/inicio/instalacion)
 
-Ejemplo:
+### Instalación
+````bash
+composer require dev-cucei-itrans/siiau-api-client
+````
+### Configuración de credenciales
+Para hacer uso del paquete se tendrán que configurar las debidas credenciales dentro del archivo .env
+````env
+SIIAU_WS_URL="url_de_la_api"
+SIIAU_WS_EMAIL="correo_de_acceso"
+SIIAU_WS_PASSWORD="contraseña_de_acceso"
+````
+
+### Uso
 ````php
-use Siiau\ApiClient\Requests\{LoginRequest, GetAlumnoRequest};
-use Siiau\ApiClient\{SiiauAuthenticator, SiiauConnector};
+$alumno = siiau()->alumno()->encontrar(
+    codigo: '1234567890'
+);
+````
 
-// Conector
-$siiau = new SiiauConnector(url: 'https://example.siauu.com');
-
-// Auténtica todas las requests usando el mismo autenticador
-$siiau->authenticate(new SiiauAuthenticator(new LoginRequest(
-    email: 'your@email.com',
-    password: 'YourSecurePassword',
-)));
-
-// Envía la petición
-$response = $siiau->send(new GetAlumnoRequest(
-    codigo: '316438817',
-));
-
-// Accede a datos
-$response->dto()->nombre;
-
+### Cómo utilizar los DTO
+El uso del helper retornará un DTO. Con esto podrá acceder a información específica de la respuesta de forma sencilla.
+````php
+echo($alumno->carrera->id);
+````
+Realizando esto, podría imprimir lo siguiente.
+````bash
+INNI
 ````
