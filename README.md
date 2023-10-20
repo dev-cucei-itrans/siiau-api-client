@@ -2,7 +2,7 @@
 ## _Simple SDK for interacting with SIIAU web service_
 
 ### Documentación adicional
-[SIIAU API Client](https://app.gitbook.com/o/FkcKGebEVUJFrMnsK8ah/s/L4rTuWQMb44ymVnv3W9H/inicio/instalacion)
+[Documentación](https://dev-cucei-itrans.gitbook.io/siiau-api-client)
 
 ### Instalación
 ````bash
