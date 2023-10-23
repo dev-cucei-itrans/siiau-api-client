@@ -66,6 +66,11 @@ final class SiiauConnector extends Connector
         return new CarreraResource($this);
     }
 
+    public function shouldThrowRequestException(Response $response): bool
+    {
+        return false;
+    }
+
     public function getRequestException(
         Response $response,
         ?Throwable $senderException
