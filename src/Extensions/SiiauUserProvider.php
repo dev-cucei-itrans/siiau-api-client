@@ -55,7 +55,7 @@ final class SiiauUserProvider implements UserProvider
         }
 
         return $this->siiau->usuario()->credencialesValidas(
-            codigo: $user->getCodigo(),
+            codigo: $user->getCodigoSiiau(),
             password: $password,
         );
     }
