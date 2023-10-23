@@ -32,3 +32,7 @@ Realizando esto, podría imprimir lo siguiente.
 ````bash
 INNI
 ````
+
+## Contribución
+
+Cualquier sugerencia, problema o duda generar un nuevo issue si es que no existe uno que lo describa ya 🙂
