@@ -11,9 +11,9 @@ composer require dev-cucei-itrans/siiau-api-client
 ### Configuración de credenciales
 Para hacer uso del paquete se tendrán que configurar las debidas credenciales dentro del archivo .env
 ````env
-SIIAU_WS_URL="url_de_la_api"
-SIIAU_WS_EMAIL="correo_de_acceso"
-SIIAU_WS_PASSWORD="contraseña_de_acceso"
+SIIAU_WS_URL="https://example.siiau.com"
+SIIAU_WS_EMAIL="your@email.com"
+SIIAU_WS_PASSWORD="YourSecurePassword"
 ````
 
 ### Uso
