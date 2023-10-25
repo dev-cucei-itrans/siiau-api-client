@@ -3,8 +3,8 @@
 namespace Siiau\ApiClient;
 
 use Siiau\ApiClient\Resources\{AlumnoResource, CarreraResource, UsuarioResource, KardexResource, MateriaResource};
-use Saloon\Http\{Connector, Response};
-use Siiau\ApiClient\Exceptions\{ClientException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
+use Saloon\Http\{Connector, PendingRequest, Response};
+use Siiau\ApiClient\Exceptions\{ClientException, ForbiddenException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
 use Throwable;
 
 final class SiiauConnector extends Connector
@@ -24,6 +24,15 @@ final class SiiauConnector extends Connector
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
+    }
+
+    public function boot(PendingRequest $pendingRequest): void
+    {
+        try {
+            //code...
+        } catch (ForbiddenException) {
+            //throw $th;
+        }
     }
 
     /**
@@ -71,6 +80,11 @@ final class SiiauConnector extends Connector
         return false;
     }
 
+    public function hasRequestFailed(Response $response): ?bool
+    {
+        return str_contains($response->body(), '{"status":"Token is Invalid"}');
+    }
+
     public function getRequestException(
         Response $response,
         ?Throwable $senderException
@@ -80,6 +94,7 @@ final class SiiauConnector extends Connector
             $response->clientError()    => ClientException::fromResponse($response, $senderException),
             $response->status() === 500 => InternalServerErrorException::fromResponse($response, $senderException),
             $response->serverError()    => ServerException::fromResponse($response, $senderException),
+            str_contains($response->body(), '{"status":"Token is Invalid"}') => ForbiddenException::fromResponse($response, $senderException),
             default                     => SiiauRequestException::fromResponse($response, $senderException),
         };
     }

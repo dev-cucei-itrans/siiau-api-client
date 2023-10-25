@@ -2,20 +2,41 @@
 
 namespace Siiau\ApiClient\Requests;
 
+use Illuminate\Support\Facades\Cache;
 use JsonException;
+use Saloon\CachePlugin\Traits\HasCaching;
 use Siiau\ApiClient\Attributes\NonAuthenticable;
 use Siiau\ApiClient\Objects\{Error, Token};
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
-use Saloon\Http\{Request, Response};
+use Saloon\Http\{PendingRequest, Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
 use Siiau\ApiClient\Exceptions\InvalidCredentialsException;
 use Throwable;
+use Saloon\CachePlugin\Contracts\Driver;
+use Saloon\CachePlugin\Contracts\Cacheable;
+use Saloon\CachePlugin\Drivers\LaravelCacheDriver;
 
 #[NonAuthenticable]
-final class LoginRequest extends Request implements HasBody
+final class LoginRequest extends Request implements HasBody, Cacheable
 {
     use HasJsonBody;
+    use HasCaching;
+
+    protected function getCacheableMethods(): array
+    {
+        return [Method::GET, Method::OPTIONS, Method::POST];
+    }
+
+    public function resolveCacheDriver(): Driver
+    {
+        return new LaravelCacheDriver(Cache::store());
+    }
+    
+    public function cacheExpiryInSeconds(): int
+    {
+        return 1800;
+    }
 
     protected Method $method = Method::POST;
 
