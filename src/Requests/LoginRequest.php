@@ -13,8 +13,7 @@ use Saloon\Http\{PendingRequest, Request, Response};
 use Saloon\Traits\Body\HasJsonBody;
 use Siiau\ApiClient\Exceptions\InvalidCredentialsException;
 use Throwable;
-use Saloon\CachePlugin\Contracts\Driver;
-use Saloon\CachePlugin\Contracts\Cacheable;
+use Saloon\CachePlugin\Contracts\{Cacheable, Driver};
 use Saloon\CachePlugin\Drivers\LaravelCacheDriver;
 
 #[NonAuthenticable]
@@ -32,7 +31,7 @@ final class LoginRequest extends Request implements HasBody, Cacheable
     {
         return new LaravelCacheDriver(Cache::store());
     }
-    
+
     public function cacheExpiryInSeconds(): int
     {
         return 1800;

@@ -3,15 +3,34 @@
 namespace Siiau\ApiClient;
 
 use Siiau\ApiClient\Resources\{AlumnoResource, CarreraResource, UsuarioResource, KardexResource, MateriaResource};
-use Saloon\Http\{Connector, PendingRequest, Response};
+use Saloon\Http\{Connector, Response};
 use Siiau\ApiClient\Exceptions\{ClientException, ForbiddenException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
+use Siiau\ApiClient\Requests\LoginRequest;
 use Throwable;
 
 final class SiiauConnector extends Connector
 {
     public function __construct(
         private readonly string $url,
-    ) {}
+    ) {
+        $this->middleware()->onResponse(function (Response $response) {
+            if(str_contains($response->body(), '{"status":"Token is Invalid"}')) {
+                $request = $response->getRequest();
+                if($request instanceof LoginRequest) {
+                    $request->invalidateCache();
+                }
+                $siiau = $response->getConnector();
+                $siiau->authenticate(new SiiauAuthenticator(
+                    new LoginRequest(
+                        email: config('siiau.email'),
+                        password: config('siiau.password'),
+                    )
+                ));
+                $request = $siiau->send($response->getRequest());
+                return $request;
+            }
+        });
+    }
 
     public function resolveBaseUrl(): string
     {
@@ -24,15 +43,6 @@ final class SiiauConnector extends Connector
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
-    }
-
-    public function boot(PendingRequest $pendingRequest): void
-    {
-        try {
-            //code...
-        } catch (ForbiddenException) {
-            //throw $th;
-        }
     }
 
     /**
