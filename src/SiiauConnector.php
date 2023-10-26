@@ -4,14 +4,33 @@ namespace Siiau\ApiClient;
 
 use Siiau\ApiClient\Resources\{AlumnoResource, CarreraResource, UsuarioResource, KardexResource, MateriaResource};
 use Saloon\Http\{Connector, Response};
-use Siiau\ApiClient\Exceptions\{ClientException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
+use Siiau\ApiClient\Exceptions\{ClientException, ForbiddenException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
+use Siiau\ApiClient\Requests\LoginRequest;
 use Throwable;
 
 final class SiiauConnector extends Connector
 {
     public function __construct(
         private readonly string $url,
-    ) {}
+    ) {
+        $this->middleware()->onResponse(function (Response $response) {
+            if(str_contains($response->body(), '{"status":"Token is Invalid"}')) {
+                $request = $response->getRequest();
+                if($request instanceof LoginRequest) {
+                    $request->invalidateCache();
+                }
+                $siiau = $response->getConnector();
+                $siiau->authenticate(new SiiauAuthenticator(
+                    new LoginRequest(
+                        email: config('siiau.email'),
+                        password: config('siiau.password'),
+                    )
+                ));
+                $request = $siiau->send($response->getRequest());
+                return $request;
+            }
+        });
+    }
 
     public function resolveBaseUrl(): string
     {
@@ -71,6 +90,11 @@ final class SiiauConnector extends Connector
         return false;
     }
 
+    public function hasRequestFailed(Response $response): ?bool
+    {
+        return str_contains($response->body(), '{"status":"Token is Invalid"}');
+    }
+
     public function getRequestException(
         Response $response,
         ?Throwable $senderException
@@ -80,6 +104,7 @@ final class SiiauConnector extends Connector
             $response->clientError()    => ClientException::fromResponse($response, $senderException),
             $response->status() === 500 => InternalServerErrorException::fromResponse($response, $senderException),
             $response->serverError()    => ServerException::fromResponse($response, $senderException),
+            str_contains($response->body(), '{"status":"Token is Invalid"}') => ForbiddenException::fromResponse($response, $senderException),
             default                     => SiiauRequestException::fromResponse($response, $senderException),
         };
     }

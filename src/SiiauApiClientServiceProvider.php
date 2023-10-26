@@ -16,7 +16,7 @@ final class SiiauApiClientServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             abstract: SiiauConnector::class,
-            concrete: static fn (): SiiauConnector => new SiiauConnector(
+            concrete: static fn(): SiiauConnector => new SiiauConnector(
                 url: config('siiau.base_url')
             ),
         );
@@ -33,7 +33,7 @@ final class SiiauApiClientServiceProvider extends ServiceProvider
 
         $this->app['auth']->provider(
             name: 'siiau',
-            callback: static fn (Application $app, array $config): UserProvider => new SiiauUserProvider(
+            callback: static fn(Application $app, array $config): UserProvider => new SiiauUserProvider(
                 userProvider: $app['auth']->createUserProvider($config['decorate']),
                 siiau: $app->make(SiiauConnector::class),
             ),

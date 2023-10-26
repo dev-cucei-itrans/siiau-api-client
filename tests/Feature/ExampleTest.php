@@ -1,5 +1,6 @@
 <?php
 
+use Siiau\ApiClient\Facades\Siiau;
 use Siiau\ApiClient\Requests\{BuscarNrcRequest,
     CarrerasAlumnoRequest,
     DetalleNrcRequest,
