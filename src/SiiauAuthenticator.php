@@ -38,6 +38,6 @@ final class SiiauAuthenticator implements Authenticator
         $token = $response->dto();
         assert($token instanceof Token);
 
-        $pendingRequest->headers()->add('Authorization', "$token->type $token->value");
+        $pendingRequest->headers()->add('Authorization', "$token->type s$token->value");
     }
 }

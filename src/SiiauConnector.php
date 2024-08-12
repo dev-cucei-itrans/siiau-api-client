@@ -4,7 +4,12 @@ namespace Siiau\ApiClient;
 
 use Siiau\ApiClient\Resources\{AlumnoResource, CarreraResource, UsuarioResource, KardexResource, MateriaResource};
 use Saloon\Http\{Connector, Response};
-use Siiau\ApiClient\Exceptions\{ClientException, InternalServerErrorException, NotFoundException, ServerException, SiiauRequestException};
+use Siiau\ApiClient\Exceptions\{ClientException,
+    InternalServerErrorException,
+    InvalidTokenException,
+    NotFoundException,
+    ServerException,
+    SiiauRequestException};
 use Throwable;
 
 final class SiiauConnector extends Connector
@@ -68,11 +73,7 @@ final class SiiauConnector extends Connector
 
     public function hasRequestFailed(Response $response): ?bool
     {
-        return in_array($response->body(), [
-            '{"status":"Token is Invalid"}',
-            '{"status":"Token is Expired"}',
-            '{"status":"Authorization Token not found"}',
-        ], true) ? true : null;
+        return hasInvalidToken($response) ? true : null;
     }
 
     public function shouldThrowRequestException(Response $response): bool
@@ -89,7 +90,16 @@ final class SiiauConnector extends Connector
             $response->clientError()    => ClientException::fromResponse($response, $senderException),
             $response->status() === 500 => InternalServerErrorException::fromResponse($response, $senderException),
             $response->serverError()    => ServerException::fromResponse($response, $senderException),
+            hasInvalidToken($response)  => InvalidTokenException::fromResponse($response, $senderException),
             default                     => SiiauRequestException::fromResponse($response, $senderException),
         };
     }
+}
+
+function hasInvalidToken(Response $response): bool
+{
+    return preg_match(
+        '/{"status":"(Token is Invalid|Token is Expired|Authorization Token not found)"}/',
+        $response->body(),
+    ) === 1;
 }
