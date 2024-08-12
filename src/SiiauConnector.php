@@ -66,6 +66,15 @@ final class SiiauConnector extends Connector
         return new CarreraResource($this);
     }
 
+    public function hasRequestFailed(Response $response): ?bool
+    {
+        return in_array($response->body(), [
+            '{"status":"Token is Invalid"}',
+            '{"status":"Token is Expired"}',
+            '{"status":"Authorization Token not found"}',
+        ], true) ? true : null;
+    }
+
     public function shouldThrowRequestException(Response $response): bool
     {
         return false;
@@ -73,7 +82,7 @@ final class SiiauConnector extends Connector
 
     public function getRequestException(
         Response $response,
-        ?Throwable $senderException
+        ?Throwable $senderException,
     ): ?Throwable {
         return match (true) {
             $response->status() === 404 => NotFoundException::fromResponse($response, $senderException),
