@@ -19,7 +19,7 @@ final class DetalleNrcRequest extends Request implements HasBody
 
     public function __construct(
         private readonly string $nrc,
-        private readonly string $ciclo
+        private readonly string $ciclo,
     ) {}
 
     public function resolveEndpoint(): string
@@ -31,7 +31,7 @@ final class DetalleNrcRequest extends Request implements HasBody
     {
         return [
             'nrc' => $this->nrc,
-            'ciclo' => $this->ciclo
+            'ciclo' => $this->ciclo,
         ];
     }
 
@@ -70,13 +70,13 @@ final class DetalleNrcRequest extends Request implements HasBody
                 hora: $horario['horario'],
                 edificio: $horario['edificio'],
                 aula: $horario['aula'],
-                dias: $diasCollection
+                dias: $diasCollection,
             );
         }
 
         foreach($data['profesores'] as $profesor) {
             $profesores[] = new Profesor(
-                codigo: $profesor['codigoProfesor']
+                codigo: $profesor['codigoProfesor'],
             );
         }
 

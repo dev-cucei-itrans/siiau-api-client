@@ -71,7 +71,7 @@ final class CarrerasAlumnoRequest extends Request implements HasBody
                 universidad: new Universidad(
                     campus: $carrera['campus'],
                     sede: $carrera['sede'],
-                )
+                ),
             );
         }
 

@@ -18,7 +18,7 @@ final class BuscarNrcRequest extends Request implements HasBody
     public function __construct(
         private readonly string $claveMateria,
         private readonly string $seccion,
-        private readonly string $ciclo
+        private readonly string $ciclo,
     ) {}
 
     public function resolveEndpoint(): string
@@ -31,7 +31,7 @@ final class BuscarNrcRequest extends Request implements HasBody
         return [
             'claveMateria' => $this->claveMateria,
             'seccion' => $this->seccion,
-            'ciclo' => $this->ciclo
+            'ciclo' => $this->ciclo,
         ];
     }
 

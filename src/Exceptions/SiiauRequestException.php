@@ -13,7 +13,7 @@ class SiiauRequestException extends RequestException
      */
     final public static function fromResponse(
         Response $response,
-        ?Throwable $senderException = null
+        ?Throwable $senderException = null,
     ): static {
         return new static(
             response: $response,

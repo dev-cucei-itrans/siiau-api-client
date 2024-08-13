@@ -18,7 +18,7 @@ final class KardexRequest extends Request implements HasBody
 
     public function __construct(
         private readonly string $codigo,
-        private readonly string $carrera
+        private readonly string $carrera,
     ) {}
 
     public function resolveEndpoint(): string
@@ -59,7 +59,7 @@ final class KardexRequest extends Request implements HasBody
                     requeridos: $area['creditosRequeridos'],
                 ),
                 diferencia: $area['diferencia'],
-                area: $area['area']
+                area: $area['area'],
             );
         }
 

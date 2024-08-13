@@ -52,7 +52,7 @@ final class GetAlumnoRequest extends Request implements HasBody
             codigo: $data['codigo'],
             estatus: new Estatus(id: $data['situacion']),
             ultimoCiclo: new Ciclo(id: $data['ultimo_ciclo'], descripcion: $data['ultimo_cicloDesc']),
-            campus: new Universidad(campus: $data['campus'])
+            campus: new Universidad(campus: $data['campus']),
         );
     }
 }

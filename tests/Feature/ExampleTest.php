@@ -94,7 +94,7 @@ it('validar credenciales', function () {
 
     $response = siiau()->send(new ValidarCredencialesRequest(
         codigo: '1234567890',
-        password: 'esta-es-una-contraseña-falsa'
+        password: 'esta-es-una-contraseña-falsa',
     ));
 
     expect($response->ok())->toBeTrue();

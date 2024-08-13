@@ -51,8 +51,8 @@ final class TipoUsuarioRequest extends Request implements HasBody
         return new TipoUsuario(
             tipo: $data['tipoUsuario'],
             estatus: new Estatus(
-                descripcion: $data['estatus']
-            )
+                descripcion: $data['estatus'],
+            ),
         );
     }
 }

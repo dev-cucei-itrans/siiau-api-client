@@ -19,7 +19,7 @@ final class HorarioRequest extends Request implements HasBody
 
     public function __construct(
         private readonly string $codigo,
-        private readonly string $ciclo
+        private readonly string $ciclo,
     ) {}
 
     public function resolveEndpoint(): string

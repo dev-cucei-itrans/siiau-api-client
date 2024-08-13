@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siiau\ApiClient;
 
 use Saloon\Http\PendingRequest;
 use Siiau\ApiClient\Attributes\NonAuthenticable;
-use Siiau\ApiClient\Handlers\RetryFatalAndServerErrors;
 use Siiau\ApiClient\Objects\Token;
 use Siiau\ApiClient\Requests\LoginRequest;
 use Saloon\Contracts\Authenticator;
@@ -27,12 +28,7 @@ final class SiiauAuthenticator implements Authenticator
 
         $response = $pendingRequest
             ->getConnector()
-            ->sendAndRetry(
-                request: $this->login,
-                tries: 3,
-                interval: 3000,
-                handleRetry: new RetryFatalAndServerErrors(),
-            )
+            ->send($this->login)
             ->throw();
 
         $token = $response->dto();
