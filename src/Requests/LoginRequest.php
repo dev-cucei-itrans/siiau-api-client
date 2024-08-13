@@ -66,7 +66,7 @@ final class LoginRequest extends Request implements HasBody, Cacheable
         );
     }
 
-    protected function getCacheableMethods(): array
+    private function getCacheableMethods(): array
     {
         return [Method::GET, Method::OPTIONS, Method::POST];
     }
@@ -79,5 +79,10 @@ final class LoginRequest extends Request implements HasBody, Cacheable
     public function cacheExpiryInSeconds(): int
     {
         return 1800; // 30 min
+    }
+
+    protected function cacheKey(): ?string
+    {
+        return 'custom-cache-key';
     }
 }

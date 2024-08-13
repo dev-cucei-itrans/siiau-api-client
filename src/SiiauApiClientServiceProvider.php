@@ -3,7 +3,7 @@
 namespace Siiau\ApiClient;
 
 use Illuminate\Contracts\Auth\UserProvider;
-use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
@@ -13,6 +13,9 @@ use Siiau\ApiClient\Requests\LoginRequest;
 
 final class SiiauApiClientServiceProvider extends ServiceProvider
 {
+    /**
+     * @throws BindingResolutionException
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'siiau');
@@ -27,10 +30,12 @@ final class SiiauApiClientServiceProvider extends ServiceProvider
         $this->app->resolving(
             abstract: SiiauConnector::class,
             callback: static function (SiiauConnector $connector): void {
+                $cache = Cache::driver(config('siiau.cache_driver'));
+
                 $connector->authenticate(new SiiauAuthenticator(new LoginRequest(
                     email: config('siiau.email'),
                     password: config('siiau.password'),
-                    driver: new LaravelCacheDriver(Cache::driver(config('siiau.cache_driver'))),
+                    driver: new LaravelCacheDriver($cache),
                 )));
             },
         );
