@@ -23,6 +23,8 @@ final class SiiauConnector extends Connector
 
     public ?int $retryInterval = 3000;
 
+    public ?bool $throwOnMaxTries = false;
+
     public function __construct(
         private readonly string $url,
     ) {}
