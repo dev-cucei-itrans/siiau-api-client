@@ -1,6 +1,7 @@
 {
     "name": "dev-cucei-itrans/siiau-api-client",
     "description": "Simple SDK for interacting with SIIAU web service",
+    "keywords": ["siiau", "laravel", "client", "sdk"],
     "type": "library",
     "require": {
         "php": "^8.1",
@@ -15,7 +16,7 @@
         "orchestra/testbench": "^8.13",
         "laravel/facade-documenter": "dev-main"
     },
-    "license": "proprietary",
+    "license": "BSD-3-Clause",
     "autoload": {
         "psr-4": {
             "Siiau\\ApiClient\\": "src/"
@@ -31,8 +32,12 @@
     },
     "authors": [
         {
-            "name": "Oscar Arámbula",
+            "name": "Oscar Eduardo Arámbula Vega",
             "email": "peteroso876@gmail.com"
+        },
+        {
+            "name": "Abraham Israel Lopez Eguiarte",
+            "email": "abraham.lopez5085@alumnos.udg.mx"
         }
     ],
     "minimum-stability": "stable",
