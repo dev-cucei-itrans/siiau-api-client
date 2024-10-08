@@ -59,4 +59,9 @@ final class SiiauUserProvider implements UserProvider
             password: $password,
         );
     }
+
+    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false): void
+    {
+        $this->userProvider->rehashPasswordIfRequired($user, $credentials, $force);
+    }
 }

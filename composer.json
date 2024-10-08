@@ -13,7 +13,7 @@
     "require-dev": {
         "pestphp/pest": "^2.20",
         "friendsofphp/php-cs-fixer": "^3.34",
-        "orchestra/testbench": "^8.13",
+        "orchestra/testbench": "^8.13 || ^9.0",
         "laravel/facade-documenter": "dev-main"
     },
     "license": "BSD-3-Clause",
